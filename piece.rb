@@ -17,15 +17,15 @@ class Piece
   end
 
   def in_bounds?(pos)
-    pos_x, pos_y = pos[0], pos[1]
-    return false if pos_x > 8 || pos_x < 0
-    return false if pos_y > 8 || pos_y < 0
+    pos_x, pos_y = pos
+    return false if pos_x > 7 || pos_x < 0
+    return false if pos_y > 7 || pos_y < 0
     true
   end
 
   def on_piece?(pos)
-    pos_x, pos_y = pos[0], pos[1]
-    return false if @board.rows[pos_x][pos_y]
-    true
+    pos_x, pos_y = pos
+    return true if @board.rows[pos_x][pos_y]
+    false
   end
 end
