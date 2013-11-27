@@ -2,6 +2,7 @@ require_relative 'piece'
 class SlidingPiece < Piece
   def moves
     moves = []
+
     move_directions.each do |direction|
       new_pos = [self.position[0] + direction[0],
                  self.position[1] + direction[1]]
@@ -12,9 +13,9 @@ class SlidingPiece < Piece
   end
 
   def move_in_direction(pos, direction)
-    return [] unless in_bounds?(pos)
+    return [] unless @board.in_bounds?(pos)
 
-    if(on_piece?(pos))
+    if(@board.on_piece?(pos))
       return (same_color?(pos) ? [] : [pos])
     end
 

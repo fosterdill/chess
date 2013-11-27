@@ -24,6 +24,14 @@ class Board
     @rows[row][col] = piece
   end
 
+  def in_bounds?(pos)
+    pos.all? { |el| el.between?(0, 7) }
+  end
+
+  def on_piece?(pos)
+    !!self[pos]
+  end
+
   def check?(move = nil)
 
   end

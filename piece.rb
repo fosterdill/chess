@@ -1,4 +1,13 @@
 class Piece
+  SYMBOLS = {
+    :white => {
+
+    },
+    :black => {
+      # :king
+    }
+  }
+
   attr_accessor :position
   attr_reader :color
 
@@ -32,21 +41,17 @@ class Piece
     raise NotImplemented
   end
 
-  def in_bounds?(pos)
-    pos.all? { |el| el.between?(0, 7) }
-  end
-
-  def on_piece?(pos)
-    !!@board[pos]
-  end
-
   def same_color?(pos)
     piece = @board[pos]
     self.color == piece.color
   end
 
   def inspect
-    "Pan"
+    "PPP"
+  end
+
+  def to_s
+    #
   end
 end
 

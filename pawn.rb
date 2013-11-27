@@ -19,31 +19,36 @@ class Pawn < Piece
     ]
   }
 
-
   def moves
-    moves = []
+    step_moves + attack_moves
+  end
 
-    MOVE_DIRECTIONS[:up].each do |direction|
-      next if direction == [0, 2] && (self.position[1] <=> @rank) == @direction
+  def step_moves
+    [].tap do |moves|
+      MOVE_DIRECTIONS[:up].each do |direction|
+        next if direction == [0, 2] && (self.position[1] <=> @rank) == @direction
 
-      new_pos = [self.position[0]]
-      new_pos += [self.position[1] + (@direction * direction[1])]
+        new_pos = [self.position[0]]
+        new_pos += [self.position[1] + (@direction * direction[1])]
 
-      unless on_piece?(new_pos)
-        moves << new_pos unless direction == [0, 2] && moves.empty?
+        if @board.in_bounds?(new_pos) && !@board.on_piece?(new_pos)
+          moves << new_pos unless direction == [0, 2] && moves.empty?
+        end
       end
     end
+  end
 
-    MOVE_DIRECTIONS[:diagonals].each do |direction|
+  def attack_moves
+    [].tap do |moves|
+      MOVE_DIRECTIONS[:diagonals].each do |direction|
 
-      new_pos = [self.position[0] + direction[0]]
-      new_pos += [self.position[1] + (@direction * direction[1])]
+        new_pos = [self.position[0] + direction[0]]
+        new_pos += [self.position[1] + (@direction * direction[1])]
 
-      if on_piece?(new_pos) && !same_color?(new_pos)
-        moves << new_pos
+        if @board.on_piece?(new_pos) && !same_color?(new_pos)
+          moves << new_pos
+        end
       end
     end
-
-    moves
   end
 end
