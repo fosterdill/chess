@@ -16,12 +16,15 @@ class Board
   end
 
   def display
-    @rows.transpose.reverse.each do |row|
+    puts "\n   A  B  C  D  E  F  G  H"
+    @rows.transpose.reverse.each_with_index do |row, index|
+      print "#{8 - index} "
       row.each do |tile|
         tile.nil? ? (print "|__") : (print "|#{tile.to_s} ")
       end
       print "|\n"
     end
+    puts "   A  B  C  D  E  F  G  H"
   end
 
   def [](pos)
@@ -36,6 +39,7 @@ class Board
 
   def move_piece(from_pos, to_pos)
     piece_to_move = self[from_pos]
+    raise InvalidMoveError if piece_to_move.nil?
     raise InvalidMoveError if invalid_move?(piece_to_move, to_pos)
 
     if on_piece?(to_pos)
@@ -45,19 +49,17 @@ class Board
 
     piece_to_move.position = to_pos
     self[to_pos], self[from_pos] = piece_to_move, nil
-
   end
 
   def invalid_move?(piece, to_pos)
     [
       :puts_self_in_check?,
       :invalid_piece_movement?,
-
     ].any? { |validity_check| send(validity_check, piece, to_pos) }
   end
 
   def invalid_piece_movement?(piece, to_pos)
-    p !piece.moves.include?(to_pos)
+    !piece.moves.include?(to_pos)
   end
 
   def puts_self_in_check?(piece, to_pos)
@@ -84,13 +86,9 @@ class Board
 
   end
 
-  # def chess_to_arr(pos_str)
-  #
-  # end
-  #
-  # def arr_to_chess(pos)
-  #
-  # end
+  def in_check_mate?
+    false
+  end
 
   def place_color(color, row_coords)
     pawn_y = row_coords[:pawn]
@@ -111,31 +109,3 @@ class Board
     place_color(:black, :pawn => 6, :pieces => 7)
   end
 end
-
-board = Board.new
-
-# a = Knight.new([1, 1], :white, board)
-# board[[1,1]] = a
-#
-# b = Rook.new([3, 2], :black, board)
-# board[[3, 2]] = b
-
-# q = Queen.new([4, 4], :white, board)
-# board[[4,4]] = q
-
-# c = Pawn.new([1, 2], :white, board)
-# #d = Pawn.new([1, 2], :white, board)
-# e = Pawn.new([2, 2], :black, board)
-#
-# board[[1, 2]] = c
-# #board[[1, 2]] = d
-# board[[2, 2]] = e
-
-#pp board
-
-#p a.moves
-#p b.moves
-# p c.moves
-# p e.moves
-
-board.display

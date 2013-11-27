@@ -45,10 +45,11 @@ class Pawn < Piece
         new_pos = [self.position[0] + direction[0]]
         new_pos += [self.position[1] + (@direction * direction[1])]
 
-        if @board.on_piece?(new_pos) && !same_color?(new_pos)
-          moves << new_pos
+        if @board.in_bounds?(new_pos) && @board.on_piece?(new_pos)
+          moves << new_pos unless same_color?(new_pos)
         end
       end
     end
   end
+
 end
