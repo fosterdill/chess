@@ -1,4 +1,5 @@
 require_relative 'pieces'
+require 'pp'
 
 class Board
   attr_reader :rows
@@ -27,6 +28,14 @@ class Board
 
   end
 
+  def inspect
+    result = ""
+    @rows.transpose.reverse.each do |row|
+      result += row.inspect + "\n"
+    end
+    result
+  end
+
   # def chess_to_arr(pos_str)
   #
   # end
@@ -47,6 +56,17 @@ board = Board.new
 # q = Queen.new([4, 4], :white, board)
 # board[[4,4]] = q
 
+c = Pawn.new([1, 2], :white, board)
+#d = Pawn.new([1, 2], :white, board)
+e = Pawn.new([2, 2], :black, board)
+
+board[[1, 2]] = c
+#board[[1, 2]] = d
+board[[2, 2]] = e
+
+pp board
+
 #p a.moves
 #p b.moves
-p a.moves
+p c.moves
+p e.moves

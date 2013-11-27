@@ -44,5 +44,9 @@ class Piece
     piece = @board[pos]
     self.color == piece.color
   end
+
+  def inspect
+    "Pan"
+  end
 end
 

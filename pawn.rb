@@ -1,32 +1,49 @@
 require_relative 'piece'
+
 class Pawn < Piece
-  attr_writer :moved
   def initialize(position, color, board)
     super(position, color, board)
-    @moved = false
     @direction = (@color == :white ? 1 : -1)
+    @rank = (@color == :white ? 1 : 6)
   end
 
-  MOVE_DIRECTIONS = [
-    [0, 1],
-    [1, 1],
-    [-1, 1]
-  ]
+  MOVE_DIRECTIONS = {
+    :up => [
+      [0, 1],
+      [0, 2]
+    ],
+
+    :diagonals => [
+      [1, 1],
+      [-1, 1]
+    ]
+  }
+
 
   def moves
     moves = []
 
-    if(moved?)
+    MOVE_DIRECTIONS[:up].each do |direction|
+      next if direction == [0, 2] && (self.position[1] <=> @rank) == @direction
 
-    else
-      MOVE_DIRECTIONS << [0, 2]
+      new_pos = [self.position[0]]
+      new_pos += [self.position[1] + (@direction * direction[1])]
 
-      MOVE_DIRECTIONS.pop
-      self.moved = true
+      unless on_piece?(new_pos)
+        moves << new_pos unless direction == [0, 2] && moves.empty?
+      end
     end
-  end
 
-  def moved?
-    @moved
+    MOVE_DIRECTIONS[:diagonals].each do |direction|
+
+      new_pos = [self.position[0] + direction[0]]
+      new_pos += [self.position[1] + (@direction * direction[1])]
+
+      if on_piece?(new_pos) && !same_color?(new_pos)
+        moves << new_pos
+      end
+    end
+
+    moves
   end
 end
