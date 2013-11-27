@@ -1,7 +1,7 @@
 class Piece
-  attr_accessor :position
+  attr_accessor :position, :board
   attr_reader :color
-  
+
   SYMBOLS = {
     :white => {
       :King => "\u265A",
@@ -20,7 +20,7 @@ class Piece
       :Pawn => "\u2659"
     }
   }
-  
+
   MOVE_DIRECTIONS = {
     :axials => [
       [0, 1],

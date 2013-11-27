@@ -1,5 +1,7 @@
 require_relative "board"
 class Chess
+  attr_reader :board
+
   LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
   def initialize
@@ -20,7 +22,7 @@ class Chess
   end
 
   def play
-    until @board.in_check_mate?
+    until @board.in_check_mate?(:white) || @board.in_check_mate?(:black)
       @board.display
       begin
         move = get_move
@@ -37,3 +39,7 @@ end
 
 game = Chess.new
 game.play
+# new_board = game.board.dup
+# new_board.move_piece([0, 1], [0, 2])
+# new_board.display
+# game.board.display

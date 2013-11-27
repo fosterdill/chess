@@ -5,9 +5,9 @@ require 'pp'
 class Board
   attr_reader :rows, :piece_bins
 
-  def initialize
+  def initialize(duplicated = false)
     create_board
-    place_pieces
+    place_pieces unless duplicated
     @piece_bins = { :black => [], :white => [] }
   end
 
@@ -37,10 +37,12 @@ class Board
     @rows[row][col] = piece
   end
 
-  def move_piece(from_pos, to_pos)
+  def move_piece(from_pos, to_pos, move_made = false)
     piece_to_move = self[from_pos]
-    raise InvalidMoveError if piece_to_move.nil?
-    raise InvalidMoveError if invalid_move?(piece_to_move, to_pos)
+    unless move_made
+      raise InvalidMoveError if piece_to_move.nil?
+      raise InvalidMoveError if invalid_move?(piece_to_move, to_pos)
+    end
 
     if on_piece?(to_pos)
       piece_at_spot = self[to_pos]
@@ -63,13 +65,20 @@ class Board
   end
 
   def puts_self_in_check?(piece, to_pos)
+    # board_after_move = self.dup
+    # board_after_move.move_piece(piece.position, to_pos, true)
+    # puts "move made"
+    # p to_pos
+    # board_after_move.in_check?(piece.color)
     false
   end
 
   def dup
-    new_board = Board.new
-    8.times do |pos_x|
-      8.times { |pos_y| new_board[[pos_x, pos_x]] = self[[pos_x, pos_y]].dup }
+    new_board = Board.new(true)
+    self.each_piece do |piece|
+      new_board[piece.position] = piece.class.new(piece.position.dup,
+                                                  piece.color,
+                                                  new_board)
     end
     new_board
   end
@@ -82,12 +91,49 @@ class Board
     !!self[pos]
   end
 
-  def check?(move = nil)
+  def in_check?(color)
+    # king_pos = find_king_for(color).position
 
+    self.each_piece do |piece|
+      next if piece.color == color
+
+      if piece.moves.any?{ |mv| self[mv].class == King }
+        return true
+      end
+    end
+
+    false
   end
 
-  def in_check_mate?
-    false
+  def each_piece(&prc)
+    @rows.each do |row|
+      row.each do |piece|
+        next if piece.nil?
+        prc.call(piece)
+      end
+    end
+  end
+
+  def winner
+    in_check?(:white) ? 'Black' : 'White'
+  end
+
+  def in_check_mate?(color)
+    return false unless in_check?(color)
+
+    self.each_piece do |piece|
+      next if color != piece.color
+      piece.moves.each do |move|
+
+        board_after_move = self.dup
+
+        board_after_move.move_piece(piece.position, move)
+
+        return false unless board_after_move.in_check?(color)
+      end
+    end
+
+    true
   end
 
   def place_color(color, row_coords)
@@ -98,7 +144,7 @@ class Board
     self[[1, pieces_y]] = Knight.new([1, pieces_y], color, self)
     self[[6, pieces_y]] = Knight.new([6, pieces_y], color, self)
     self[[2, pieces_y]] = Bishop.new([2, pieces_y], color, self)
-    self[[5, pieces_y]] = Bishop.new([5, pieces_y], color, self)
+    self[[5, pieces_y]] = Rook.new([5, pieces_y], color, self)
     self[[3, pieces_y]] = Queen.new([3, pieces_y], color, self)
     self[[4, pieces_y]] = King.new([4, pieces_y], color, self)
     (0..7).each { |i| self[[i, pawn_y]] = Pawn.new([i, pawn_y], color, self) }
@@ -107,5 +153,18 @@ class Board
   def place_pieces
     place_color(:white, :pawn => 1, :pieces => 0)
     place_color(:black, :pawn => 6, :pieces => 7)
+    self[[5, 4]] = Knight.new([5, 4], :white, self)
   end
 end
+
+# b = Board.new
+# b.move_piece([0, 1], [0, 2])
+#
+# d = b.dup
+
+# d.move_piece([0, 1], [0, 2])
+# p b[[0, 1]]
+# p d[[0, 1]]
+#
+# b.display
+# d.display
