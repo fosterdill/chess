@@ -26,6 +26,7 @@ class Chess
       @board.display
       begin
         move = get_move
+        raise InvalidMoveError if @board[move[0]].nil?
         raise InvalidMoveError if @board[move[0]].move_into_check?(move[1])
         @board.move_piece(*move)
       rescue InvalidMoveError

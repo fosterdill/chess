@@ -71,4 +71,3 @@ class Piece
     SYMBOLS[@color][self.class.to_s.to_sym]
   end
 end
-
