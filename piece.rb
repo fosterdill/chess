@@ -46,6 +46,18 @@ class Piece
     raise NotImplemented
   end
 
+  def move_into_check?(pos)
+    board_after_move = @board.dup
+    board_after_move.move_piece(@position, pos)
+    board_after_move.in_check?(@color)
+  end
+
+  def valid_moves
+    moves.reject do |move|
+      move_into_check?(move)
+    end
+  end
+
   def moves
     raise NotImplemented
   end

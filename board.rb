@@ -37,18 +37,8 @@ class Board
     @rows[row][col] = piece
   end
 
-  def move_piece(from_pos, to_pos, move_made = false)
+  def move_piece(from_pos, to_pos)
     piece_to_move = self[from_pos]
-    unless move_made
-      raise InvalidMoveError if piece_to_move.nil?
-      raise InvalidMoveError if invalid_move?(piece_to_move, to_pos)
-    end
-
-    if on_piece?(to_pos)
-      piece_at_spot = self[to_pos]
-      @piece_bins[piece_at_spot.color] << piece_at_spot
-    end
-
     piece_to_move.position = to_pos
     self[to_pos], self[from_pos] = piece_to_move, nil
   end
@@ -61,7 +51,7 @@ class Board
   end
 
   def invalid_piece_movement?(piece, to_pos)
-    !piece.moves.include?(to_pos)
+    !piece.valid_moves.include?(to_pos)
   end
 
   def puts_self_in_check?(piece, to_pos)
@@ -123,14 +113,7 @@ class Board
 
     self.each_piece do |piece|
       next if color != piece.color
-      piece.moves.each do |move|
-
-        board_after_move = self.dup
-
-        board_after_move.move_piece(piece.position, move)
-
-        return false unless board_after_move.in_check?(color)
-      end
+      return false unless piece.valid_moves.empty?
     end
 
     true
