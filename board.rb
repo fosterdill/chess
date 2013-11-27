@@ -14,31 +14,39 @@ class Board
   LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
   def [](pos)
-    col, row = pos.split('')
-    @rows[LETTERS.index(col)][row.to_i - 1]
+    row, col = pos
+    @rows[row][col]
   end
 
   def []= (pos, piece)
-    col, row = pos.split('')
-    @rows[LETTERS.index(col)][row.to_i - 1] = piece
+    row, col = pos
+    @rows[row][col] = piece
   end
 
   def check?(move = nil)
 
   end
+
+  # def chess_to_arr(pos_str)
+  #
+  # end
+  #
+  # def arr_to_chess(pos)
+  #
+  # end
 end
 
 board = Board.new
 
-a = Bishop.new([1, 1], :white, board)
-board["B2"] = a
+# a = Knight.new([1, 1], :white, board)
+# board[[1,1]] = a
+#
+# b = Rook.new([3, 2], :black, board)
+# board[[3, 2]] = b
 
-b = Rook.new([6, 6], :white, board)
-board["G7"] = b
-
-q = Queen.new([4, 4], :white, board)
-board["E5"] = q
+# q = Queen.new([4, 4], :white, board)
+# board[[4,4]] = q
 
 #p a.moves
 #p b.moves
-p q.moves
+p a.moves

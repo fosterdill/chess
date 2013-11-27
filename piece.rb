@@ -2,13 +2,29 @@ class Piece
   attr_accessor :position
   attr_reader :color
 
+  MOVE_DIRECTIONS = {
+    :axials => [
+      [0, 1],
+      [1, 0],
+      [0, -1],
+      [-1, 0]
+    ],
+
+    :diagonals => [
+      [1, 1],
+      [-1, 1],
+      [1, -1],
+      [-1, -1]
+    ]
+  }
+
   def initialize(position, color, board)
     @position = position
     @color = color
     @board = board
   end
 
-  def move_dirs
+  def move_directions
     raise NotImplemented
   end
 
@@ -17,15 +33,16 @@ class Piece
   end
 
   def in_bounds?(pos)
-    pos_x, pos_y = pos
-    return false if pos_x > 7 || pos_x < 0
-    return false if pos_y > 7 || pos_y < 0
-    true
+    pos.all? { |el| el.between?(0, 7) }
   end
 
   def on_piece?(pos)
-    pos_x, pos_y = pos
-    return true if @board.rows[pos_x][pos_y]
-    false
+    !!@board[pos]
+  end
+
+  def same_color?(pos)
+    piece = @board[pos]
+    self.color == piece.color
   end
 end
+
