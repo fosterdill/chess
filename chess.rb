@@ -40,7 +40,3 @@ end
 
 game = Chess.new
 game.play
-# new_board = game.board.dup
-# new_board.move_piece([0, 1], [0, 2])
-# new_board.display
-# game.board.display

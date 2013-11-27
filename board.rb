@@ -43,26 +43,6 @@ class Board
     self[to_pos], self[from_pos] = piece_to_move, nil
   end
 
-  def invalid_move?(piece, to_pos)
-    [
-      :puts_self_in_check?,
-      :invalid_piece_movement?,
-    ].any? { |validity_check| send(validity_check, piece, to_pos) }
-  end
-
-  def invalid_piece_movement?(piece, to_pos)
-    !piece.valid_moves.include?(to_pos)
-  end
-
-  def puts_self_in_check?(piece, to_pos)
-    # board_after_move = self.dup
-    # board_after_move.move_piece(piece.position, to_pos, true)
-    # puts "move made"
-    # p to_pos
-    # board_after_move.in_check?(piece.color)
-    false
-  end
-
   def dup
     new_board = Board.new(true)
     self.each_piece do |piece|
@@ -82,8 +62,6 @@ class Board
   end
 
   def in_check?(color)
-    # king_pos = find_king_for(color).position
-
     self.each_piece do |piece|
       next if piece.color == color
 
@@ -127,7 +105,7 @@ class Board
     self[[1, pieces_y]] = Knight.new([1, pieces_y], color, self)
     self[[6, pieces_y]] = Knight.new([6, pieces_y], color, self)
     self[[2, pieces_y]] = Bishop.new([2, pieces_y], color, self)
-    self[[5, pieces_y]] = Rook.new([5, pieces_y], color, self)
+    self[[5, pieces_y]] = Bishop.new([5, pieces_y], color, self)
     self[[3, pieces_y]] = Queen.new([3, pieces_y], color, self)
     self[[4, pieces_y]] = King.new([4, pieces_y], color, self)
     (0..7).each { |i| self[[i, pawn_y]] = Pawn.new([i, pawn_y], color, self) }
@@ -136,18 +114,5 @@ class Board
   def place_pieces
     place_color(:white, :pawn => 1, :pieces => 0)
     place_color(:black, :pawn => 6, :pieces => 7)
-    self[[5, 4]] = Knight.new([5, 4], :white, self)
   end
 end
-
-# b = Board.new
-# b.move_piece([0, 1], [0, 2])
-#
-# d = b.dup
-
-# d.move_piece([0, 1], [0, 2])
-# p b[[0, 1]]
-# p d[[0, 1]]
-#
-# b.display
-# d.display
