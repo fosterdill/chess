@@ -55,10 +55,6 @@ class Piece
     self.color == piece.color
   end
 
-  def inspect
-    "PPP"
-  end
-
   def to_s
     SYMBOLS[@color][self.class.to_s.to_sym]
   end

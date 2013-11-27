@@ -15,6 +15,49 @@ class Board
     @rows = Array.new(8) { Array.new(8) }
   end
   
+  def display
+    @rows.transpose.reverse.each do |row|
+      row.each do |tile|
+        tile.nil? ? (print "|__") : (print "|#{tile.to_s} ")
+      end
+      print "|\n"
+    end
+  end
+
+  def [](pos)
+    row, col = pos
+    @rows[row][col]
+  end
+
+  def []= (pos, piece)
+    row, col = pos
+    @rows[row][col] = piece
+  end
+  
+  def move_piece(from_pos, to_pos)
+    #if self[from_pos]
+  end
+
+  def in_bounds?(pos)
+    pos.all? { |el| el.between?(0, 7) }
+  end
+
+  def on_piece?(pos)
+    !!self[pos]
+  end
+
+  def check?(move = nil)
+
+  end
+  
+  # def chess_to_arr(pos_str)
+  #
+  # end
+  #
+  # def arr_to_chess(pos)
+  #
+  # end
+  
   def place_pieces
     self[[0, 0]] = Rook.new([0, 0], :white, self)
     self[[7, 0]] = Rook.new([7, 0], :white, self)
@@ -36,53 +79,6 @@ class Board
     self[[4, 7]] = King.new([4, 7], :black, self)
     (0..7).each { |i| self[[i, 6]] = Pawn.new([i, 6], :black, self) }
   end
-  
-  def display
-    @rows.transpose.reverse.each do |row|
-      row.each do |tile|
-        tile.nil? ? (print "|__") : (print "|#{tile.to_s} ")
-      end
-      print "|\n"
-    end
-  end
-
-  def [](pos)
-    row, col = pos
-    @rows[row][col]
-  end
-
-  def []= (pos, piece)
-    row, col = pos
-    @rows[row][col] = piece
-  end
-
-  def in_bounds?(pos)
-    pos.all? { |el| el.between?(0, 7) }
-  end
-
-  def on_piece?(pos)
-    !!self[pos]
-  end
-
-  def check?(move = nil)
-
-  end
-
-  def inspect
-    result = ""
-    @rows.transpose.reverse.each do |row|
-      result += row.inspect + "\n"
-    end
-    result
-  end
-
-  # def chess_to_arr(pos_str)
-  #
-  # end
-  #
-  # def arr_to_chess(pos)
-  #
-  # end
 end
 
 board = Board.new
