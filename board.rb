@@ -1,4 +1,5 @@
 require_relative 'pieces'
+require 'colorize'
 
 class Board
   attr_reader :rows, :piece_bins
@@ -13,16 +14,30 @@ class Board
     @rows = Array.new(8) { Array.new(8) }
   end
 
+  def switch_color(color)
+    color == :light_red ? :red : :light_red
+  end
+
+  def add_color(board_space, tile, board_color)
+    piece_color = (tile ? tile.color : :black)
+    print board_space.colorize(:background => switch_color(board_color),
+                               :color => piece_color)
+  end
+
   def display
-    puts "\n   A  B  C  D  E  F  G  H"
+    puts "\n A B C D E F G H"
+    board_color = switch_color(board_color)
     @rows.transpose.reverse.each_with_index do |row, index|
-      print "#{8 - index} "
+      print "#{8 - index}"
+      board_color = switch_color(board_color)
       row.each do |tile|
-        tile.nil? ? (print "|__") : (print "|#{tile.to_s} ")
+        board_space = (tile.nil? ? ("  ") : ("#{tile.to_s} "))
+        add_color(board_space, tile, board_color)
+        board_color = switch_color(board_color)
       end
-      print "|\n"
+      print "\n"
     end
-    puts "   A  B  C  D  E  F  G  H"
+    puts " A B C D E F G H"
   end
 
   def [](pos)
@@ -58,7 +73,7 @@ class Board
   end
 
   def on_piece?(pos)
-    !!self[pos]
+    !self[pos].nil?
   end
 
   def in_check?(color)
@@ -98,16 +113,14 @@ class Board
   end
 
   def place_color(color, row_coords)
+    piece_types = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+
     pawn_y = row_coords[:pawn]
     pieces_y = row_coords[:pieces]
-    self[[0, pieces_y]] = Rook.new([0, pieces_y], color, self)
-    self[[7, pieces_y]] = Rook.new([7, pieces_y], color, self)
-    self[[1, pieces_y]] = Knight.new([1, pieces_y], color, self)
-    self[[6, pieces_y]] = Knight.new([6, pieces_y], color, self)
-    self[[2, pieces_y]] = Bishop.new([2, pieces_y], color, self)
-    self[[5, pieces_y]] = Bishop.new([5, pieces_y], color, self)
-    self[[3, pieces_y]] = Queen.new([3, pieces_y], color, self)
-    self[[4, pieces_y]] = King.new([4, pieces_y], color, self)
+
+    piece_types.each_with_index do |type, i|
+      self[[i, pieces_y]] = type.new([i, pieces_y], color, self)
+    end
     (0..7).each { |i| self[[i, pawn_y]] = Pawn.new([i, pawn_y], color, self) }
   end
 

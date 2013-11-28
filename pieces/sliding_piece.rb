@@ -23,4 +23,8 @@ class SlidingPiece < Piece
     new_pos = [pos[0] + direction[0], pos[1] + direction[1]]
     [pos] + move_in_direction(new_pos, direction)
   end
+
+  def move_directions
+    raise NotImplemented
+  end
 end

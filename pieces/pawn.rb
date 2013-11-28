@@ -26,7 +26,7 @@ class Pawn < Piece
   def step_moves
     [].tap do |moves|
       MOVE_DIRECTIONS[:up].each do |direction|
-        next if direction == [0, 2] && (self.position[1] <=> @rank) == @direction
+        next if direction == [0, 2] && self.position[1] != @rank
 
         new_pos = [self.position[0]]
         new_pos += [self.position[1] + (@direction * direction[1])]

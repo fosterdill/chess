@@ -13,4 +13,8 @@ class SteppingPiece < Piece
 
     moves
   end
+
+  def move_directions
+    raise NotImplemented
+  end
 end

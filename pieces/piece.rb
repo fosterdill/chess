@@ -12,12 +12,12 @@ class Piece
       :Pawn => "\u265F"
     },
     :black => {
-      :King => "\u2654",
-      :Queen => "\u2655",
-      :Rook => "\u2656",
-      :Bishop => "\u2657",
-      :Knight => "\u2658",
-      :Pawn => "\u2659"
+      :King => "\u265A",
+      :Queen => "\u265B",
+      :Rook => "\u265C",
+      :Bishop => "\u265D",
+      :Knight => "\u265E",
+      :Pawn => "\u265F"
     }
   }
 
@@ -40,10 +40,6 @@ class Piece
     @position = position
     @color = color
     @board = board
-  end
-
-  def move_directions
-    raise NotImplemented
   end
 
   def move_into_check?(pos)

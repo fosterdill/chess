@@ -6,10 +6,8 @@ class HumanPlayer
   end
 
   def get_move
-    puts "\nEnter a piece to move <A6>:"
-    move_from = gets.chomp
-    puts "Enter a position to move to:"
-    move_to = gets.chomp
+    puts "\nEnter a piece to move <A6,E5>:"
+    move_from, move_to = gets.chomp.split(/,\s*/)
 
     parse_input(move_from, move_to)
   end
