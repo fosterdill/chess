@@ -1,43 +1,59 @@
-require_relative "board"
-class Chess
-  attr_reader :board
+require_relative 'board'
+require_relative 'human_player'
+require_relative 'errors'
 
-  LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+class Chess
+  attr_reader :board, :turn
 
   def initialize
     @board = Board.new
-  end
-
-  def get_move
-    puts "\nEnter a piece to move <A6>:"
-    move_from = gets.chomp
-    puts "Enter a position to move to:"
-    move_to = gets.chomp
-
-    #convert ['A', '5'] into [0, 4]
-    move_from = [LETTERS.index(move_from[0].upcase), move_from[1].to_i - 1]
-    move_to = [LETTERS.index(move_to[0].upcase), move_to[1].to_i - 1]
-
-    [move_from, move_to]
+    @turn = :white
+    @players = {
+      :white => HumanPlayer.new(:white),
+      :black => HumanPlayer.new(:black)
+    }
   end
 
   def play
-    until @board.in_check_mate?(:white) || @board.in_check_mate?(:black)
+    until game_over?
       @board.display
-      begin
-        move = get_move
-        raise InvalidMoveError if @board[move[0]].nil?
-        raise InvalidMoveError if @board[move[0]].move_into_check?(move[1])
-        @board.move_piece(*move)
-      rescue InvalidMoveError
-        puts "Please play a legal move!"
-        retry
-      end
+      self.play_turn
+      @turn = (@turn == :white ? :black : :white)
     end
 
     puts "#{@board.winner} is the winner!"
   end
+
+  def game_over?
+    @board.in_check_mate?(:white) || @board.in_check_mate?(:black)
+  end
+
+  def validate_move(move)
+    piece = board[move[0]]
+    raise IncorrectColorError if piece.nil? || piece.color != @turn
+    raise MoveIntoCheckError if piece.move_into_check?(move[1])
+    raise InvalidMoveError unless piece.moves.include?(move[1])
+  end
+
+  def play_turn
+    begin
+      move = @players[@turn].get_move
+      validate_move(move)
+      board.move_piece(*move)
+    rescue IncorrectColorError
+      puts "\nPlease move a #{@turn} piece.\n"
+      retry
+    rescue MoveIntoCheckError
+      puts "\nCannot move into check!\n"
+      retry
+    rescue InvalidMoveError
+      puts "\nPlease play a legal move!\n"
+      retry
+    end
+  end
 end
 
-game = Chess.new
-game.play
+if __FILE__ == $PROGRAM_NAME
+  game = Chess.new
+  game.play
+end

@@ -1,6 +1,4 @@
 require_relative 'pieces'
-require_relative "invalid_move_error"
-require 'pp'
 
 class Board
   attr_reader :rows, :piece_bins
@@ -45,11 +43,13 @@ class Board
 
   def dup
     new_board = Board.new(true)
+
     self.each_piece do |piece|
       new_board[piece.position] = piece.class.new(piece.position.dup,
                                                   piece.color,
                                                   new_board)
     end
+
     new_board
   end
 
