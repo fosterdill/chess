@@ -18,11 +18,16 @@ class Chess
   def play
     until game_over?
       @board.display
+      puts "\n#{@turn.capitalize}'s turn!"
       self.play_turn
-      @turn = (@turn == :white ? :black : :white)
+      self.switch_turns
     end
 
     puts "#{@board.winner} is the winner!"
+  end
+  
+  def switch_turns
+    @turn = (@turn == :white ? :black : :white)
   end
 
   def game_over?
@@ -39,6 +44,8 @@ class Chess
   def play_turn
     begin
       move = @players[@turn].get_move
+      return save_file if move == "SAVE"
+      return load_file if move == "LOAD"
       validate_move(move)
       board.move_piece(*move)
     rescue IncorrectColorError
@@ -51,20 +58,23 @@ class Chess
       puts "\nPlease play a legal move!\n"
       retry
     rescue InvalidInputError
-      puts "\nWrong format, correct format <A1,A2>"
+      puts "\nWrong format. Correct format <A1,A2>.\n"
       retry
     end
   end
 
   def save_file
+    self.switch_turns
     serialized_board = [@board, @turn].to_yaml
     File.open("chess.sav", "w") { |f| f.puts(serialized_board) }
+    puts "\n**Game Saved**"
   end
 
   def load_file
     serialized_board = YAML::load_file("chess.sav")
     @board = serialized_board[0]
     @turn = serialized_board[1]
+    puts "\n**Game Loaded**"
   end
 end
 

@@ -1,0 +1,263 @@
+---
+- &2152366260 !ruby/object:Board
+  rows:
+  - - !ruby/object:Rook
+      position:
+      - 0
+      - 0
+      color: :white
+      board: *2152366260
+    - !ruby/object:Pawn
+      position:
+      - 0
+      - 1
+      color: :white
+      board: *2152366260
+      direction: 1
+      rank: 1
+    - 
+    - 
+    - 
+    - 
+    - !ruby/object:Pawn
+      position:
+      - 0
+      - 6
+      color: :black
+      board: *2152366260
+      direction: -1
+      rank: 6
+    - !ruby/object:Rook
+      position:
+      - 0
+      - 7
+      color: :black
+      board: *2152366260
+  - - !ruby/object:Knight
+      position:
+      - 1
+      - 0
+      color: :white
+      board: *2152366260
+    - !ruby/object:Pawn
+      position:
+      - 1
+      - 1
+      color: :white
+      board: *2152366260
+      direction: 1
+      rank: 1
+    - 
+    - 
+    - 
+    - 
+    - !ruby/object:Pawn
+      position:
+      - 1
+      - 6
+      color: :black
+      board: *2152366260
+      direction: -1
+      rank: 6
+    - 
+  - - !ruby/object:Bishop
+      position:
+      - 2
+      - 0
+      color: :white
+      board: *2152366260
+    - !ruby/object:Pawn
+      position:
+      - 2
+      - 1
+      color: :white
+      board: *2152366260
+      direction: 1
+      rank: 1
+    - 
+    - 
+    - 
+    - !ruby/object:Knight
+      position:
+      - 2
+      - 5
+      color: :black
+      board: *2152366260
+    - !ruby/object:Pawn
+      position:
+      - 2
+      - 6
+      color: :black
+      board: *2152366260
+      direction: -1
+      rank: 6
+    - !ruby/object:Bishop
+      position:
+      - 2
+      - 7
+      color: :black
+      board: *2152366260
+  - - !ruby/object:Queen
+      position:
+      - 3
+      - 0
+      color: :white
+      board: *2152366260
+    - !ruby/object:Pawn
+      position:
+      - 3
+      - 1
+      color: :white
+      board: *2152366260
+      direction: 1
+      rank: 1
+    - 
+    - 
+    - 
+    - 
+    - !ruby/object:Pawn
+      position:
+      - 3
+      - 6
+      color: :black
+      board: *2152366260
+      direction: -1
+      rank: 6
+    - !ruby/object:Queen
+      position:
+      - 3
+      - 7
+      color: :black
+      board: *2152366260
+  - - !ruby/object:King
+      position:
+      - 4
+      - 0
+      color: :white
+      board: *2152366260
+    - !ruby/object:Pawn
+      position:
+      - 4
+      - 1
+      color: :white
+      board: *2152366260
+      direction: 1
+      rank: 1
+    - 
+    - 
+    - 
+    - 
+    - !ruby/object:Pawn
+      position:
+      - 4
+      - 6
+      color: :black
+      board: *2152366260
+      direction: -1
+      rank: 6
+    - !ruby/object:King
+      position:
+      - 4
+      - 7
+      color: :black
+      board: *2152366260
+  - - !ruby/object:Bishop
+      position:
+      - 5
+      - 0
+      color: :white
+      board: *2152366260
+    - 
+    - 
+    - !ruby/object:Pawn
+      position:
+      - 5
+      - 3
+      color: :white
+      board: *2152366260
+      direction: 1
+      rank: 1
+    - 
+    - 
+    - !ruby/object:Pawn
+      position:
+      - 5
+      - 6
+      color: :black
+      board: *2152366260
+      direction: -1
+      rank: 6
+    - !ruby/object:Bishop
+      position:
+      - 5
+      - 7
+      color: :black
+      board: *2152366260
+  - - !ruby/object:Knight
+      position:
+      - 6
+      - 0
+      color: :white
+      board: *2152366260
+    - !ruby/object:Pawn
+      position:
+      - 6
+      - 1
+      color: :white
+      board: *2152366260
+      direction: 1
+      rank: 1
+    - 
+    - 
+    - 
+    - 
+    - !ruby/object:Pawn
+      position:
+      - 6
+      - 6
+      color: :black
+      board: *2152366260
+      direction: -1
+      rank: 6
+    - !ruby/object:Knight
+      position:
+      - 6
+      - 7
+      color: :black
+      board: *2152366260
+  - - !ruby/object:Rook
+      position:
+      - 7
+      - 0
+      color: :white
+      board: *2152366260
+    - !ruby/object:Pawn
+      position:
+      - 7
+      - 1
+      color: :white
+      board: *2152366260
+      direction: 1
+      rank: 1
+    - 
+    - 
+    - 
+    - 
+    - !ruby/object:Pawn
+      position:
+      - 7
+      - 6
+      color: :black
+      board: *2152366260
+      direction: -1
+      rank: 6
+    - !ruby/object:Rook
+      position:
+      - 7
+      - 7
+      color: :black
+      board: *2152366260
+  piece_bins:
+    :black: []
+    :white: []
+- :black

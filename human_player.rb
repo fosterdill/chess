@@ -6,11 +6,17 @@ class HumanPlayer
   def get_move
     puts "\nEnter a piece to move <A6,E5>:"
     input = gets.chomp
+    
+    return "SAVE" if input.upcase == "SAVE"
+    return "LOAD" if input.upcase == "LOAD"
+    
     raise InvalidInputError unless input.include?(',')
     move_from, move_to = input.split(/,\s*/)
 
     parse_input(move_from, move_to)
   end
+  
+  
 
   LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
