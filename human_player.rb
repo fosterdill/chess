@@ -1,16 +1,18 @@
 class HumanPlayer
-  LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-
   def initialize(color)
     @color = color
   end
 
   def get_move
     puts "\nEnter a piece to move <A6,E5>:"
-    move_from, move_to = gets.chomp.split(/,\s*/)
+    input = gets.chomp
+    raise InvalidInputError unless input.include?(',')
+    move_from, move_to = input.split(/,\s*/)
 
     parse_input(move_from, move_to)
   end
+
+  LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
   def parse_input(move_from, move_to)
     #convert ['A', '5'] into [0, 4]

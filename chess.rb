@@ -1,6 +1,7 @@
 require_relative 'board'
 require_relative 'human_player'
 require_relative 'errors'
+require 'yaml'
 
 class Chess
   attr_reader :board, :turn
@@ -49,7 +50,21 @@ class Chess
     rescue InvalidMoveError
       puts "\nPlease play a legal move!\n"
       retry
+    rescue InvalidInputError
+      puts "\nWrong format, correct format <A1,A2>"
+      retry
     end
+  end
+
+  def save_file
+    serialized_board = [@board, @turn].to_yaml
+    File.open("chess.sav", "w") { |f| f.puts(serialized_board) }
+  end
+
+  def load_file
+    serialized_board = YAML::load_file("chess.sav")
+    @board = serialized_board[0]
+    @turn = serialized_board[1]
   end
 end
 
